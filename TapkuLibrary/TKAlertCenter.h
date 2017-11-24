@@ -42,6 +42,8 @@
 	CGRect _alertFrame;
 }
 
+@property (weak, nonatomic) UIWindow *keyWindow;
+
 /** Returns the process’s default notification center. 
  @return The current process’s default notification center, which is used for alert notifications.
  */

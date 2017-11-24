@@ -148,7 +148,7 @@
 	_active = NO;
 	
 	
-	_alertFrame = [UIScreen mainScreen].applicationFrame;
+	_alertFrame = [UIScreen mainScreen].bounds;
 
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillAppear:) name:UIKeyboardWillShowNotification object:nil];
@@ -172,9 +172,13 @@
 	_active = YES;
 	_alertView.transform = CGAffineTransformIdentity;
 	_alertView.alpha = 0;
-	[[UIApplication sharedApplication].keyWindow addSubview:_alertView];
-
-	
+    
+    if (_keyWindow)
+        [_keyWindow addSubview:_alertView];
+    else
+        [[UIApplication sharedApplication].keyWindow addSubview:_alertView];
+    
+    
 	
 	NSArray *ar = _alerts[0];
 	
@@ -298,7 +302,7 @@ CGRect subtractRect(CGRect wf,CGRect kf){
 	NSDictionary *userInfo = [notification userInfo];
 	NSValue* aValue = userInfo[UIKeyboardFrameEndUserInfoKey];
 	CGRect kf = [aValue CGRectValue];
-	CGRect wf = [UIScreen mainScreen].applicationFrame;
+	CGRect wf = [UIScreen mainScreen].bounds;
 	
 	[UIView beginAnimations:nil context:nil];
 	_alertFrame = subtractRect(wf,kf);
@@ -307,7 +311,7 @@ CGRect subtractRect(CGRect wf,CGRect kf){
 
 }
 - (void) keyboardWillDisappear:(NSNotification *) notification {
-	_alertFrame = [UIScreen mainScreen].applicationFrame;
+	_alertFrame = [UIScreen mainScreen].bounds;
 
 }
 - (void) orientationWillChange:(NSNotification *) notification {
